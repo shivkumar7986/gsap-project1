@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import { allCocktails } from "../../constants/index";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Menu = () => {
   const contentRef = useRef();
@@ -22,6 +24,47 @@ const Menu = () => {
   const currentCocktail = getCocktailAt(0);
   const prevCocktail = getCocktailAt(-1);
   const nextCocktail = getCocktailAt(1);
+
+  useGSAP(() => {
+    gsap.fromTo(".title", { opacity: 0 }, { opacity: 1, duration: 1 });
+    gsap.fromTo(
+      ".cocktail img",
+      { opacity: 0, xPercent: -100 },
+      { opacity: 1, xPercent: 0, ease: "power1.inOut", duration: 1 },
+    );
+
+    gsap.fromTo(
+      ".details h2",
+      { yPercent: 100, opacity: 0 },
+      { yPercent: 0, opacity: 1, duration: 1, ease: "power1.inOut" },
+    );
+
+    gsap.fromTo(
+      ".details p",
+      { yPercent: 100, opacity: 0 },
+      { yPercent: 0, opacity: 1, duration: 1, ease: "power1.inOut" },
+    );
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "#menu",
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+        markers: true,
+      },
+    });
+
+    timeline
+      .from("#m-left-leaf", {
+        x: -100,
+        y: 100,
+      })
+      .from("#m-right-leaf", {
+        x: 100,
+        y: 100,
+      });
+  }, [currentIndex]);
 
   return (
     <section id="menu" aria-labelledby="menu-heading">
