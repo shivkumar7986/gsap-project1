@@ -1,63 +1,109 @@
-import React, { useState } from 'react';
-import { sliderLists } from '../../constants';
+import { useRef, useState } from "react";
+import { allCocktails } from "../../constants/index";
 
 const Menu = () => {
-   
+  const contentRef = useRef();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const currentDrink = sliderLists[currentIndex];
+  const totalCocktails = allCocktails.length;
 
-    const nextDrink = () => {
-        setCurrentIndex((prev) => (prev + 1) % sliderLists.length);
-    };
+  const goToSlide = (index) => {
+    const newIndex = (index + totalCocktails) % totalCocktails;
 
-    const prevDrink = () => {
-        setCurrentIndex((prev) => (prev - 1 + sliderLists.length) % sliderLists.length);
-    };
+    setCurrentIndex(newIndex);
+  };
 
-    return (
-        <section id="menu">
-            <img src="/images/leaf-left.png" alt="leaf" id="m-left-leaf" />
-            <img src="/images/leaf-right.png" alt="leaf" id="m-right-leaf" />
-            
-            <div className="cocktail-tabs">
-                {sliderLists.map((item, index) => (
-                    <button 
-                        key={item.id} 
-                        className={index === currentIndex ? "text-yellow border-yellow" : ""}
-                        onClick={() => setCurrentIndex(index)}
-                    >
-                        {item.name}
-                    </button>
-                ))}
-            </div>
+  const getCocktailAt = (indexOffset) => {
+    return allCocktails[
+      (currentIndex + indexOffset + totalCocktails) % totalCocktails
+    ];
+  };
 
-            <div className="content">
-                <div className="arrows">
-                    <button onClick={prevDrink}>
-                        <span>PREV</span>
-                    </button>
-                    <button onClick={nextDrink}>
-                        <span>NEXT</span>
-                    </button>
-                </div>
-                
-                <div className="cocktail">
-                    <img src={currentDrink.image} alt={currentDrink.name} />
-                </div>
-                
-                <div className="recipe">
-                    <div className="info">
-                        <p id="title">{currentDrink.name}</p>
-                    </div>
-                    <div className="details">
-                        <h2>{currentDrink.title}</h2>
-                        <p>{currentDrink.description}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
+  const currentCocktail = getCocktailAt(0);
+  const prevCocktail = getCocktailAt(-1);
+  const nextCocktail = getCocktailAt(1);
+
+  return (
+    <section id="menu" aria-labelledby="menu-heading">
+      <img
+        src="/images/slider-left-leaf.png"
+        alt="left-leaf"
+        id="m-left-leaf"
+      />
+      <img
+        src="/images/slider-right-leaf.png"
+        alt="right-leaf"
+        currentIndex
+        id="m-right-leaf"
+      />
+
+      <h2 id="menu-heading" className="sr-only">
+        Cocktail Menu
+      </h2>
+
+      <nav className="cocktail-tabs" aria-label="Cocktail Navigation">
+        {allCocktails.map((cocktail, index) => {
+          const isActive = index === currentIndex;
+
+          return (
+            <button
+              key={cocktail.id}
+              className={`
+				${isActive ? "text-white border-white" : "text-white/50 border-white/50"}
+			 `}
+              onClick={() => goToSlide(index)}
+            >
+              {cocktail.name}
+            </button>
+          );
+        })}
+      </nav>
+
+      <div className="content">
+        <div className="arrows">
+          <button
+            className="text-left"
+            onClick={() => goToSlide(currentIndex - 1)}
+          >
+            <span>{prevCocktail.name}</span>
+            <img
+              src="/images/right-arrow.png"
+              alt="right-arrow"
+              aria-hidden="true"
+            />
+          </button>
+
+          <button
+            className="text-left"
+            onClick={() => goToSlide(currentIndex + 1)}
+          >
+            <span>{nextCocktail.name}</span>
+            <img
+              src="/images/left-arrow.png"
+              alt="left-arrow"
+              aria-hidden="true"
+            />
+          </button>
+        </div>
+
+        <div className="cocktail">
+          <img src={currentCocktail.image} className="object-contain" />
+        </div>
+
+        <div className="recipe">
+          <div ref={contentRef} className="info">
+            <p>Recipe for:</p>
+            <p id="title">{currentCocktail.name}</p>
+          </div>
+
+          <div className="details">
+            <h2>{currentCocktail.title}</h2>
+            <p>{currentCocktail.description}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Menu;

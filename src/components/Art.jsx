@@ -7,7 +7,7 @@ const Art = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
 
   useGSAP(() => {
-    const start = isMobile ? "top 20%" : "top top";
+    const start = isMobile ? "top 30%" : "top top";
 
     const maskTimeline = gsap.timeline({
       scrollTrigger: {
@@ -38,6 +38,18 @@ const Art = () => {
       ease: "power1.inOut",
       duration: 1,
     });
+
+    maskTimeline.fromTo(
+      ".side-drink",
+      { opacity: 0, y: 100 },
+      {
+        opacity: 1,
+        y: 0,
+        ease: "power1.inOut",
+        duration: 1,
+      },
+      "<",
+    );
   }, []);
   return (
     <div id="art">
@@ -73,6 +85,17 @@ const Art = () => {
         </div>
 
         <div className="masked-container">
+          <img
+            src="/images/drink4.png"
+            alt="drink4"
+            className="side-drink absolute left-0 md:left-20 top-10 md:top-32 w-20 md:w-32 opacity-0 -rotate-12 object-contain"
+          />
+          <img
+            src="/images/cup-2.png"
+            alt="cup-2"
+            className="side-drink absolute right-0 md:right-20 bottom-5 md:bottom-32 w-20 md:w-32 opacity-0 rotate-12 object-contain"
+          />
+
           <h2 className="will-fade">Sip-Worthy Perfection</h2>
           <div id="masked-content">
             <h3>Made with Craft, Poured with Passion</h3>
