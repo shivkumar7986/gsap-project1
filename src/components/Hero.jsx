@@ -65,6 +65,7 @@ const Hero = () => {
         {
           currentTime: videoRef.current.duration,
           scale: 1,
+          ease: "none",
         },
       );
     };
