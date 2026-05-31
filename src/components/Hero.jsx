@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/all";
 import { useMediaQuery } from "react-responsive";
 
@@ -42,11 +42,11 @@ const Hero = () => {
           scrub: true,
         },
       })
-      .to(".right-leaf", { y: 200 }, 0)
-      .to(".left-leaf", { y: -200 }, 0);
+      .to(".right-leaf", { y: 300, ease: "none" }, 0)
+      .to(".left-leaf", { y: -300, ease: "none" }, 0);
 
     const startVal = isMobile ? "top 50%" : "center 60%";
-    const endVal = isMobile ? "120% top" : "bottom top";
+    const endVal = isMobile ? "115% top" : "bottom top";
 
     const videoTl = gsap.timeline({
       scrollTrigger: {
@@ -112,7 +112,7 @@ const Hero = () => {
       <div className="video absolute inset-0">
         <video
           src="/videos/output.mp4"
-          mutes
+          muted
           playsInline
           preload="auto"
           ref={videoRef}
