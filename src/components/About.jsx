@@ -10,25 +10,33 @@ const About = () => {
     const scrollTimeline = gsap.timeline({
       scrollTrigger: {
         trigger: "#about",
-        start: "top center",
+        start: "top 60%",
         toggleActions: "play reverse play reverse",
       },
     });
 
-    scrollTimeline.from(titleSplit.words, {
-      yPercent: "100",
-      opacity: 0,
-      duration: 1,
-      ease: "expo.out",
-      stagger: 0.02,
-    });
+    scrollTimeline.from(
+      titleSplit.words,
+      {
+        yPercent: "100",
+        opacity: 0,
+        duration: 1,
+        ease: "expo.out",
+        stagger: 0.02,
+      },
+      0,
+    );
 
-    scrollTimeline.from(".top-grid div , .bottom-grid div", {
-      opacity: 0,
-      y: 100,
-      ease: "power1.inOut",
-      stagger: 0.05,
-    });
+    scrollTimeline.from(
+      ".top-grid div , .bottom-grid div",
+      {
+        opacity: 0,
+        y: 100,
+        ease: "power1.inOut",
+        stagger: 0.05,
+      },
+      "-=0.5",
+    );
 
     // Animate the avatar pill and circles
     scrollTimeline.from(
@@ -39,7 +47,7 @@ const About = () => {
         duration: 0.5,
         ease: "back.out(1.5)",
       },
-      "-=0.5",
+      0,
     );
 
     scrollTimeline.from(
@@ -51,7 +59,7 @@ const About = () => {
         duration: 0.5,
         ease: "back.out(2)",
       },
-      "-=0.3",
+      0,
     );
   }, []);
 
